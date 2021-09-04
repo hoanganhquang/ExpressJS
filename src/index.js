@@ -5,10 +5,16 @@ const morgan = require('morgan')
 const app = express()
 const port = 3000
 
+// Routes
+const routes = require('./routes/index')
 
+// static path
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(express.urlencoded())
+// dispatcher
+app.use(express.urlencoded({
+    extended: true
+}))
 app.use(express.json())
 
 //template engine
@@ -19,22 +25,9 @@ app.set('views', path.join(__dirname, 'views'))
 //HTTP Logger
 app.use(morgan('combined'))
 
+// route init
+routes(app)
 
-app.get('/', (req, res) => {
-    res.render('home')
-})
-
-
-app.get('/search', (req, res)=>{
-    console.log(req.query)
-    res.render('search')
-})
-
-
-app.post('/search', (req, res)=>{
-    console.log(req.body)
-    res.send()
-})
 
 app.listen(port, ()=>{
     console.log(`listening at http://localhost:${port}`)
