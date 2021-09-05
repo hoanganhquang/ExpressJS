@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const Course = new Schema({
   name: {type: String, default: ''},
   description: String,
+  slug: String
 });
 
 
