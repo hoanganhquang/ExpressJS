@@ -1,8 +1,18 @@
+const course = require('../models/course')
 class SitesController {
 
     // [/home, GET]
-    home(req, res){
-        res.render('home')
+    home(req, res, next){
+        
+        course.find({})
+        .lean()
+            .then(course => {
+                res.render('home', {
+                    course
+                })
+            })
+            .catch(next)
+
     }
 }
 

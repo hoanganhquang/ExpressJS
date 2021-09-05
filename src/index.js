@@ -4,6 +4,9 @@ const path = require('path')
 const morgan = require('morgan')
 const app = express()
 const port = 3000
+const db = require('./config/db/index')
+
+db.connect()
 
 // Routes
 const routes = require('./routes/index')
