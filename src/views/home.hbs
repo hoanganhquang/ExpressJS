@@ -1,5 +1,13 @@
-<ul>
-    {{#each course}}
-    <li>{{this.name}} - <a href="/courses/{{this.slug}}">{{this.slug}}</a></li>
-    {{/each}} 
-</ul>
+{{#each course}}
+
+    <a class="card" style="width: 18rem;">
+    <a href="/courses/{{this.slug}}">
+    <img src="..." class="card-img-top" alt="...">
+    </a>
+    <div class="card-body">
+        <h5 class="card-title">{{this.name}}</h5>
+        <p class="card-text">{{this.description}}</p>
+        <a href="#" class="btn btn-primary">Go</a>
+    </div>
+    </div>
+{{/each}}
