@@ -31,6 +31,19 @@ class CoursesController {
             })
             .catch(next)
     }
+
+    // [courses/:id/edit, GET]
+    edit(req, res, next){
+        Course.findById(req.params.id)
+            .lean()
+            .then((re)=>{
+                res.render('courses/edit', {
+                    re
+                })
+
+            })
+            .catch(next)
+    }
 }
 
 

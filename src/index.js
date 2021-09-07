@@ -21,7 +21,11 @@ app.use(express.urlencoded({
 app.use(express.json())
 
 //template engine
-app.engine('hbs', hdb({extname: '.hbs'}))
+app.engine('hbs', hdb({
+    extname: '.hbs',
+    helpers: {
+        sum: (a, b) => a + b,
+}}))
 app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname, 'views'))
 
@@ -32,6 +36,6 @@ app.use(morgan('combined'))
 routes(app)
 
 
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`listening at http://localhost:${port}`)
 })
