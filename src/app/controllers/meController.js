@@ -16,6 +16,17 @@ class MeController {
         
 
     }
+
+    // [/archived/courses, GET]
+    archived(req, res, next) {
+        Course.findDeleted({})
+            .lean()
+            .then((re) => {
+                res.render('me/archived', {
+                    re
+                })
+            })
+    }
 }
 
 

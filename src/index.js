@@ -2,6 +2,7 @@ const express = require('express')
 const hdb = require('express-handlebars')
 const path = require('path')
 const morgan = require('morgan')
+const methodOverride = require('method-override')
 const app = express()
 const port = 3000
 const db = require('./config/db/index')
@@ -19,6 +20,9 @@ app.use(express.urlencoded({
     extended: true
 }))
 app.use(express.json())
+
+app.use(methodOverride('_method'))
+
 
 //template engine
 app.engine('hbs', hdb({

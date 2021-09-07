@@ -32,7 +32,7 @@ class CoursesController {
             .catch(next)
     }
 
-    // [courses/:id/edit, GET]
+    // [/courses/:id/edit, GET]
     edit(req, res, next){
         Course.findById(req.params.id)
             .lean()
@@ -44,6 +44,45 @@ class CoursesController {
             })
             .catch(next)
     }
+
+    // [/courses/:id, PUT]
+    update(req, res, next) {
+        Course.updateOne({_id: req.params.id}, req.body)
+            .then(()=>{
+                res.redirect('/me/stored/courses')
+            })
+            .catch(next)
+    }
+
+    // [/courses/:id, DELETE]
+    delete(req, res, next) {
+        Course.delete({_id: req.params.id})
+            .then((re) => {
+                res.redirect('back')
+            })
+            .catch(next)
+    }
+
+    // [/courses/:id/force, DELETE]
+    deleteForce(req, res, next) {
+        Course.deleteOne({_id: req.params.id})
+            .then((re) => {
+                res.redirect('back')
+            })
+            .catch(next)
+    }
+
+    
+    // [/courses/:id, PATCH]
+    restore(req, res, next) {
+        Course.restore({_id: req.params.id})
+            .then((re) => {
+                res.redirect('back')
+            })
+            .catch(next)
+    }
+
+    // [/cour]
 }
 
 

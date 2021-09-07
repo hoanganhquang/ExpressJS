@@ -16,20 +16,17 @@
             <td>{{this.name}}</td>
             <td>{{this.description}}</td>
             <td>
-                <a href="/courses/{{this._id}}/edit">Edit</a>
-                <form action="/courses/{{this._id}}?_method=DELETE" method="POST">
+                <form action="/courses/{{this._id}}/restore?_method=PATCH" method="POST"> 
+                    <button type="submit">Restore</button>
+                </form>
+
+                <form action="/courses/{{this._id}}/force?_method=DELETE" method="POST">
                     <button type="submit">Delete</button>
                 </form>
                 
             </td>
         </tr>
-        {{else}}
-            <tr>
-                <td colspan="5">
-                    Have no courses
-                    <a href="/courses/create">Create course</a>
-                </td>
-            </tr>
+    
         {{/each}}
     </tbody>
 </table>
