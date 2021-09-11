@@ -1,12 +1,11 @@
-const fs = require("fs");
+const express = require("express")
+const app = express()
+const port = 3000
 
-setTimeout(() => console.log("Timer 1 finished"), 0);
-setImmediate(() => console.log("Immediate 1 finished"));
+app.get('/', (req, res)=>{
+  res.status(200).json({hi: 'hello'})
+})
 
-fs.readFile("test-file.txt", () => {
-  console.log("I/O finished");
-  setTimeout(() => console.log("Timer 2 finished"), 0);
-  setImmediate(() => console.log("Immediate 2 finished"));
-});
-
-console.log("Top level code");
+app.listen(port, ()=>{
+  console.log(`http://localhost:${port}`)
+})
