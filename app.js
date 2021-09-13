@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.json());
 app.use(morgan("dev"));
+// app.use(express.static(`${__dirname}/`))
 
 app.use("/api/v1/tours", tourRoutes);
 app.use("/api/v1/users", userRoutes);
