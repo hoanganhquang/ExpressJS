@@ -1,11 +1,4 @@
-exports.checkID = (req, res, next, val) => {
-  if (val == 10) {
-    return res.status(404).json({
-      mess: "invalid ID",
-    });
-  }
-  next();
-};
+const Tour = require("../models/tourModel");
 
 exports.getAllTours = (req, res, next) => {
   res.status(200).json({
@@ -19,17 +12,20 @@ exports.getTour = (req, res, next) => {
   });
 };
 
-exports.checkBody = (req, res, next) => {
-  if (!req.body.name || !req.body.price) {
-    return res.status(400).json({
-      mess: "invalid data",
+exports.createTour = async (req, res, next) => {
+  try {
+    const newTour = await Tour.create(req.body);
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Fail",
+      message: error,
     });
   }
-  next();
-};
-
-exports.createTour = (req, res, next) => {
-  res.status(200).json({
-    data: "Create Tour",
-  });
 };
