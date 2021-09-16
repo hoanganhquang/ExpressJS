@@ -2,12 +2,21 @@ const Tour = require("../models/tourModel");
 
 exports.getAllTours = async (req, res, next) => {
   try {
-    const allTour = await Tour.find();
+    let data = JSON.stringify(req.query);
+    data = data.replace(/\b(gt|lt)\b/g, (match) => `$${match}`);
+    data = JSON.parse(data);
+    let allTour = Tour.find(data);
+
+    if (req.query.sort){
+      allTour = allTour.sort(req.query.sort)
+    }
+
+    const q = await allTour;
 
     res.status(200).json({
       status: "Success",
       data: {
-        allTour,
+        q,
       },
     });
   } catch (error) {
@@ -73,16 +82,16 @@ exports.updateTour = async (req, res) => {
   }
 };
 
-exports.deleteTour = async (req, res)=>{
+exports.deleteTour = async (req, res) => {
   try {
-    await Tour.findByIdAndDelete(req.params.id)
+    await Tour.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
-      status: "Success"
-    })
+      status: "Success",
+    });
   } catch (error) {
     res.status(400).json({
-      status: "Fail"
-    })
+      status: "Fail",
+    });
   }
-}
+};
