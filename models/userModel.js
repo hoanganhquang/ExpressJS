@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
 const validator = require("../node_modules/validator/validator");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -11,7 +12,11 @@ const userSchema = new mongoose.Schema({
     minlength: 3,
   },
   email: {
-    tpye: String,
+    type: String,
+    required: [true, "Need an email"],
+    trim: true,
+    unique: true,
+    validate: [validator.isEmail, "Provide a valid email"],
   },
   photo: {
     type: String,
@@ -21,12 +26,27 @@ const userSchema = new mongoose.Schema({
     required: [true, "Must have password"],
     trim: true,
     minlength: 6,
+    select: false,
   },
   passwordConfirm: {
     type: String,
     required: true,
     trim: true,
+    validate: {
+      validator: function (value) {
+        return value === this.password;
+      },
+      message: "Need same as password",
+    },
   },
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
+  next();
 });
 
 const User = mongoose.model("User", userSchema);
