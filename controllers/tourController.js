@@ -4,7 +4,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.aliasTopTour = (req, res, next) => {
-  req.query.limit = "5";
+  req.query.limit = "1";
   req.query.sort = "-ratingsAverage,price";
   req.query.fields = "name,price,ratingsAvarage,summary,difficulty";
   next();
