@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
-const validator = required("validator");
+const validator = require("../node_modules/validator/validator");
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Require a name"],
@@ -12,10 +12,6 @@ const userSchema = mongoose.Schema({
   },
   email: {
     tpye: String,
-    required: [true, "Need your email"],
-    unique: true,
-    trim: true,
-    validate: [validator.isEmail, "Provide a valid email"],
   },
   photo: {
     type: String,
@@ -25,21 +21,14 @@ const userSchema = mongoose.Schema({
     required: [true, "Must have password"],
     trim: true,
     minlength: 6,
-    lowercase: true,
   },
   passwordConfirm: {
     type: String,
     required: true,
     trim: true,
-    validate: {
-      validator: function (value) {
-        return value == this.password;
-      },
-      message: "passwordConfirm must same as password",
-    },
   },
 });
 
-const User = mongoose.Model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

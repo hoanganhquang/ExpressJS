@@ -1,6 +1,9 @@
 const userRoutes = require("express").Router();
-const {getAllUsers} = require("../controllers/userController");
+const userController = require("../controllers/userController");
+const authController = require("../controllers/authController");
 
-userRoutes.route("/").get(getAllUsers);
+userRoutes.post("/signup", authController.signup);
+
+userRoutes.route("/").get(userController.getAllUsers);
 
 module.exports = userRoutes;
