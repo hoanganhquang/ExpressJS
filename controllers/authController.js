@@ -1,3 +1,4 @@
+const { promisify } = require("util");
 const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
@@ -31,12 +32,14 @@ exports.signup = catchAsync(async (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
+  // check info login
   if (!email || !password) {
     return next(new AppError("Invalid email or password"), 400);
   }
 
   const user = await User.findOne({ email }).select("+password");
 
+  // check password
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Invalid information"), 401);
   }
@@ -47,4 +50,42 @@ exports.login = catchAsync(async (req, res, next) => {
     status: "success",
     token,
   });
+});
+
+exports.protect = catchAsync(async (req, res, next) => {
+  let token;
+  // check token in header
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+
+  if (!token) {
+    return next(new AppError("Not logged in"), 401);
+  }
+
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+  const freshUser = await User.findById(decoded.id);
+
+  // check user exist
+  if (!freshUser) {
+    return next(
+      new AppError("The user belonging to this token does no longer exist", 401)
+    );
+  }
+
+  // check password changed
+  if (freshUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError("User recently changed password! Please login again"),
+      401
+    );
+  }
+
+  req.user = freshUser;
+
+  next();
 });
