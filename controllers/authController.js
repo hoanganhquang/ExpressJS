@@ -4,6 +4,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
 const Tour = require("../models/tourModel");
+const sendEmail = require("../utils/email");
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -43,7 +44,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // check password
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Invalid information"), 401);
+    return next(new AppError("Invalid information", 401));
   }
 
   const token = signToken(user._id);
@@ -65,7 +66,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   if (!token) {
-    return next(new AppError("Not logged in"), 401);
+    return next(new AppError("Not logged in", 401));
   }
 
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
@@ -97,9 +98,53 @@ exports.restrictTo = (...roles) => {
     const user = req.user;
 
     if (roles.indexOf(user.role) === -1) {
-      return next(new AppError("Your role is invalid"), 403);
+      return next(new AppError("Your role is invalid", 403));
     }
 
     next();
   };
 };
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new AppError("Not find email", 404));
+  }
+
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  const resetURL = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/users/resetPassword/${resetToken}`;
+
+  const message = `Forgot pass, submit a PATCH: ${resetURL}`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Your password reset token (10 mins)",
+      message,
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "token sent to email",
+    });
+  } catch (error) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(new AppError("There was error sending email", 500));
+  }
+  // res.status(200).json({
+  //   data: {
+  //     token: tokenRandom,
+  //     user,
+  //   },
+  // });
+});
+
+exports.resetPassword = (req, res, next) => {};
