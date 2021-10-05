@@ -3,8 +3,8 @@ const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
-const Tour = require("../models/tourModel");
 const sendEmail = require("../utils/email");
+const crypto = require("crypto");
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -147,4 +147,31 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   // });
 });
 
-exports.resetPassword = (req, res, next) => {};
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  // get user based on the token
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+  const user = await User.findOne({ passwordResetToken: hashedToken });
+
+  // if token has not expired, and there is user, set the new password
+  if (Date.now() > user.passwordResetExpires) {
+    return next(new AppError("Token expired", 400));
+  }
+  user.password = req.body.password;
+
+  // Update changedPasswordAt property for the user
+  user.passwordChangedAt = Date.now();
+  user.passwordResetExpires = undefined;
+  user.passwordResetToken = undefined;
+
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: "Success",
+    message: "Changed the password, login again",
+  });
+  // log the user in, send JWT
+});
