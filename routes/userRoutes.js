@@ -18,6 +18,8 @@ userRoutes.patch(
 
 userRoutes.post("/updateMe", authController.protect, userController.updateMe);
 
+userRoutes.delete("/deleteMe", authController.protect, userController.deleteMe);
+
 userRoutes.route("/").get(userController.getAllUsers);
 
 module.exports = userRoutes;
