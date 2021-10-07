@@ -9,3 +9,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     data: users,
   });
 });
+
+exports.updateMe = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+});
