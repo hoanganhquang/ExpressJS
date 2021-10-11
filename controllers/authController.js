@@ -4,7 +4,9 @@ const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/email");
 const crypto = require("crypto");
-const User = require("../models/userModel");
+const mongoose = require("mongoose");
+const userSchema = require("../schemas/userSchema");
+const User = mongoose.model("User", userSchema);
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -14,6 +16,7 @@ const signToken = (id) => {
 
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
+
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000

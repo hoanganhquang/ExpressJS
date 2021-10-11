@@ -5,13 +5,29 @@ const mongoSantitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 
+const mongoose = require("mongoose");
+
 const rateLimit = require("express-rate-limit");
 const tourRoutes = require("./routes/tourRoutes");
 const userRoutes = require("./routes/userRoutes");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errController");
 
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
+
 const app = express();
+
+const DB = process.env.DATABASE.replace(
+  "<PASSWORD>",
+  process.env.DATABASE_PASSWORD
+);
+
+mongoose
+  .connect(DB)
+  .then((con) => console.log("DB connection successful"))
+  .catch((err) => console.log(err));
+
 app.use(helmet());
 
 if (process.env.NODE_ENV === "development") {
@@ -49,4 +65,7 @@ app.all("*", (req, res, next) => {
 
 app.use(globalErrorHandler);
 
-module.exports = app;
+const port = process.env.PORT;
+app.listen(port, () => {
+  console.log(`http://localhost:${port}`);
+});
