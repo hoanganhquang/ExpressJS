@@ -1,5 +1,5 @@
-const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
+const User = require("../models/userModel");
 
 const filterObj = (obj, ...rest) => {
   const newOjb = {};
