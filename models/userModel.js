@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const validator = require("../node_modules/validator/validator");
+const validator = require("validator/validator");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
@@ -100,4 +100,6 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-module.exports = userSchema;
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;

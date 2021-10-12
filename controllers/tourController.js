@@ -1,9 +1,7 @@
 const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
-const mongoose = require("mongoose");
-const tourSchema = require("../schemas/tourSchema");
-const Tour = mongoose.model("Tour", tourSchema);
+const Tour = require("../models/tourModel");
 
 exports.aliasTopTour = (req, res, next) => {
   req.query.limit = "1";

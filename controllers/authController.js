@@ -4,9 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/email");
 const crypto = require("crypto");
-const mongoose = require("mongoose");
-const userSchema = require("../schemas/userSchema");
-const User = mongoose.model("User", userSchema);
+const User = require("../models/userModel");
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
