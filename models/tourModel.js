@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
 
-const tourSchema = new mongoose.Schema(
+const tourSchema = mongoose.Schema(
   {
     name: {
       type: String,

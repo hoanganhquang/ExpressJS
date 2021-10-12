@@ -3,7 +3,7 @@ const validator = require("validator/validator");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
-const userSchema = new mongoose.Schema({
+const userSchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, "Require a name"],

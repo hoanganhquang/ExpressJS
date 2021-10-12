@@ -51,10 +51,10 @@ app.use(xss());
 app.use(hpp());
 // app.use(express.static(`${__dirname}/`))
 
-app.use((req, res, next) => {
-  req.requestTime = new Date().toString();
-  next();
-});
+// app.use((req, res, next) => {
+//   req.requestTime = new Date().toString();
+//   next();
+// });
 
 app.use("/api/v1/tours", tourRoutes);
 app.use("/api/v1/users", userRoutes);
