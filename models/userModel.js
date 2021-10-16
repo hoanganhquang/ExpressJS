@@ -33,17 +33,6 @@ const userSchema = mongoose.Schema({
     minlength: 6,
     select: false,
   },
-  passwordConfirm: {
-    type: String,
-    required: true,
-    trim: true,
-    validate: {
-      validator: function (value) {
-        return value === this.password;
-      },
-      message: "Need same as password",
-    },
-  },
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
@@ -58,7 +47,6 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 12);
-  this.passwordConfirm = undefined;
   next();
 });
 
