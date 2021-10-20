@@ -24,6 +24,8 @@ tourRoutes
     authController.restrictTo("admin", "lead-guide"),
     deleteTour
   );
-tourRoutes.route("/").get(authController.protect, getAllTours).post(createTour);
+
+tourRoutes.post("/new-tour", createTour);
+tourRoutes.route("/").get(authController.protect, getAllTours);
 
 module.exports = tourRoutes;
