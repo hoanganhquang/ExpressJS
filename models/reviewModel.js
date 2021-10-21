@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { schema } = require("./tourModel");
 
 const reviewSchema = mongoose.Schema(
   {
@@ -20,7 +19,6 @@ const reviewSchema = mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "Tour",
     },
-
     user: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
@@ -33,15 +31,22 @@ const reviewSchema = mongoose.Schema(
 );
 
 reviewSchema.pre(/^find/, function (next) {
-  this.tours.populate({
-    path: "tours",
+  // this.populate({
+  //   path: "tour",
+  //   select: "name",
+  // }).populate({
+  //   path: "user",
+  //   select: "name",
+  // });
+
+  this.populate({
+    path: "user",
+    select: "name",
   });
 
-  this.users.populate({
-    path: "users",
-  });
+  next();
 });
 
-const Review = mongoose.model("review", reviewSchema);
+const Review = mongoose.model("Review", reviewSchema);
 
 module.exports = Review;

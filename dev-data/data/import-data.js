@@ -1,5 +1,8 @@
 const fs = require("fs");
+
 const Tour = require("../../models/tourModel");
+const Review = require("../../models/reviewModel");
+
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
@@ -15,11 +18,13 @@ mongoose
   .then((con) => console.log("DB connection successful"))
   .catch((err) => console.log(err));
 
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, "utf-8"));
+const reviews = JSON.parse(
+  fs.readFileSync(`${__dirname}/reviews.json`, "utf-8")
+);
 
 const importData = async () => {
   try {
-    await Tour.create(tours);
+    await Review.create(reviews);
     console.log("data imported");
   } catch (error) {
     console.log("Import fail");
@@ -30,7 +35,7 @@ const importData = async () => {
 
 const deleteData = async () => {
   try {
-    await Tour.deleteMany();
+    await Review.deleteMany();
     console.log("deleted");
   } catch (error) {
     console.log("delete fail");
