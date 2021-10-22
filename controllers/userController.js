@@ -22,6 +22,11 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
+
 exports.updateMe = catchAsync(async (req, res, next) => {
   const filter = filterObj(req.body, "name", "email");
   const user = await User.findByIdAndUpdate(req.user.id, filter, {

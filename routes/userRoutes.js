@@ -16,6 +16,13 @@ userRoutes.patch(
   authController.updatePassword
 );
 
+userRoutes.get(
+  "/me",
+  authController.protect,
+  userController.getMe,
+  userController.getUser
+);
+
 userRoutes.delete(
   "/:id",
   authController.protect,
