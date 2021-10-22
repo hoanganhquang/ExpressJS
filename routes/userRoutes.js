@@ -30,6 +30,8 @@ userRoutes.patch(
   userController.updateUser
 );
 
+userRoutes.get("/:id", userController.getUser);
+
 userRoutes.delete("/deleteMe", authController.protect, userController.deleteMe);
 
 userRoutes.post("/updateMe", authController.protect, userController.updateMe);

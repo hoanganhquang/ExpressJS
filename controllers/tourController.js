@@ -1,4 +1,3 @@
-const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const Tour = require("../models/tourModel");
@@ -11,76 +10,11 @@ exports.aliasTopTour = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  // let data = JSON.stringify(req.query);
-  // data = data.replace(/\b(gt|lt)\b/g, (match) => `$${match}`);
-  // data = JSON.parse(data);
-  // let allTour = Tour.find(data);
+exports.getAllTours = factory.getAll(Tour);
 
-  // if (req.query.sort) {
-  //   const sortBy = req.query.sort.split(",").join(" ");
-  //   allTour = allTour.sort(sortBy);
-  // } else {
-  //   allTour = allTour.sort("-createdAt");
-  // }
+exports.getTour = factory.getOne(Tour, "reviews");
 
-  // if (req.query.fields) {
-  //   const fields = req.query.fields.split(",").join(" ");
-  //   allTour = allTour.select(fields);
-  // }else {
-  //   allTour = allTour.select('-__v');
-  // }
-
-  // const page = req.query.page * 1 || 1;
-  // const limit = req.query.limit * 1 || 100;
-  // const skip = (page - 1) * limit;
-
-  // allTour = allTour.skip(skip).limit(limit);
-
-  // if(req.query.page){
-  //   const numTours = await Tour.countDocuments();
-  //   if (skip >= numTours) throw new Error('This page is not exist');
-  // }
-
-  const API = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .pagtinate();
-  const q = await API.query;
-
-  res.status(200).json({
-    status: "Success",
-    data: {
-      q,
-    },
-  });
-});
-
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate("reviews");
-
-  if (!tour) {
-    return next(new AppError("Not a tour ID", 404));
-  }
-
-  res.status(200).json({
-    status: "Success",
-    data: {
-      tour,
-    },
-  });
-});
-
-exports.createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-  res.status(200).json({
-    status: "Success",
-    data: {
-      tour: newTour,
-    },
-  });
-});
+exports.createTour = factory.createOne(Tour);
 
 exports.updateTour = factory.updateOne(Tour);
 
