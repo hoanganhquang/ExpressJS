@@ -82,6 +82,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError("Not logged in", 401));
   }
 
+  // decode token in order to check payload -> id
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   const freshUser = await User.findById(decoded.id);

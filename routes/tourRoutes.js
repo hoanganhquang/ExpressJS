@@ -11,6 +11,9 @@ const {
 } = require("../controllers/tourController");
 
 const authController = require("../controllers/authController");
+const reviewRouter = require("./reviewRoutes");
+
+tourRoutes.use("/:tourId/reviews", reviewRouter);
 
 tourRoutes.route("/tour-stats").get(getTourStats);
 tourRoutes.route("/monthly-plan/:year").get(getMonthlyPlan);

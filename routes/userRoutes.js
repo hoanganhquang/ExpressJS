@@ -16,6 +16,13 @@ userRoutes.patch(
   authController.updatePassword
 );
 
+userRoutes.delete(
+  "/:id",
+  authController.protect,
+  authController.restrictTo("admin"),
+  userController.deleteUser
+);
+
 userRoutes.post("/updateMe", authController.protect, userController.updateMe);
 
 userRoutes.delete("/deleteMe", authController.protect, userController.deleteMe);
