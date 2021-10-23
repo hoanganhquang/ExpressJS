@@ -10,38 +10,25 @@ userRoutes.post("/forgotPassword", authController.forgotPassword);
 
 userRoutes.patch("/resetPassword/:token", authController.resetPassword);
 
-userRoutes.patch(
-  "/updatePassword",
-  authController.protect,
-  authController.updatePassword
-);
+// authentication
+userRoutes.use(authController.protect);
 
-userRoutes.get(
-  "/me",
-  authController.protect,
-  userController.getMe,
-  userController.getUser
-);
+userRoutes.patch("/updatePassword", authController.updatePassword);
 
-userRoutes.delete(
-  "/:id",
-  authController.protect,
-  authController.restrictTo("admin"),
-  userController.deleteUser
-);
+userRoutes.get("/me", userController.getMe, userController.getUser);
 
-userRoutes.patch(
-  "/:id",
-  authController.protect,
-  authController.restrictTo("admin"),
-  userController.updateUser
-);
+userRoutes.delete("/deleteMe", userController.deleteMe);
+
+userRoutes.post("/updateMe", userController.updateMe);
+
+// authorization
+userRoutes.use(authController.restrictTo("admin"));
+
+userRoutes.delete("/:id", userController.deleteUser);
+
+userRoutes.patch("/:id", userController.updateUser);
 
 userRoutes.get("/:id", userController.getUser);
-
-userRoutes.delete("/deleteMe", authController.protect, userController.deleteMe);
-
-userRoutes.post("/updateMe", authController.protect, userController.updateMe);
 
 userRoutes.route("/").get(userController.getAllUsers);
 

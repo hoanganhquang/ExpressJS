@@ -1,4 +1,3 @@
-const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const Tour = require("../models/tourModel");
 const factory = require("./handlerFactory");

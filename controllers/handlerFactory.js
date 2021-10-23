@@ -16,6 +16,7 @@ exports.getAll = (Model) =>
 
     res.status(200).json({
       status: "Success",
+      length: data.length,
       data: {
         data,
       },

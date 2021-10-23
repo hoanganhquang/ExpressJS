@@ -17,7 +17,13 @@ tourRoutes.use("/:tourId/reviews", reviewRouter);
 
 tourRoutes.route("/tour-stats").get(getTourStats);
 
-tourRoutes.route("/monthly-plan/:year").get(getMonthlyPlan);
+tourRoutes
+  .route("/monthly-plan/:year")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin"),
+    getMonthlyPlan
+  );
 
 tourRoutes.route("/top-5-cheap").get(aliasTopTour, getAllTours);
 
@@ -35,8 +41,13 @@ tourRoutes
     deleteTour
   );
 
-tourRoutes.post("/new-tour", createTour);
+tourRoutes.post(
+  "/new-tour",
+  authController.protect,
+  authController.restrictTo("admin"),
+  createTour
+);
 
-tourRoutes.route("/").get(authController.protect, getAllTours);
+tourRoutes.route("/").get(getAllTours);
 
 module.exports = tourRoutes;
