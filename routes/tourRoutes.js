@@ -8,10 +8,12 @@ const {
   aliasTopTour,
   getTourStats,
   getMonthlyPlan,
+  getToursWithin,
 } = require("../controllers/tourController");
 
 const authController = require("../controllers/authController");
 const reviewRouter = require("./reviewRoutes");
+const router = require("./reviewRoutes");
 
 tourRoutes.use("/:tourId/reviews", reviewRouter);
 

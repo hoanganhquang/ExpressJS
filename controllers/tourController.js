@@ -1,6 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const Tour = require("../models/tourModel");
 const factory = require("./handlerFactory");
+const AppError = require("../utils/appError");
 
 exports.aliasTopTour = (req, res, next) => {
   req.query.limit = "1";
