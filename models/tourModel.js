@@ -28,8 +28,6 @@ const tourSchema = mongoose.Schema(
     ratingsAverage: {
       type: Number,
       default: 4.5,
-      min: 1,
-      max: 4,
       set: (val) => Math.round(val * 10) / 10,
     },
     ratingsQuantity: {
@@ -100,10 +98,12 @@ const tourSchema = mongoose.Schema(
         day: Number,
       },
     ],
-    guides: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    guides: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },

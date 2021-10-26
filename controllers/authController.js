@@ -19,11 +19,11 @@ const createSendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-    secure: false,
     httpOnly: true,
+    secure: false,
   };
 
-  if (process.env.NODE_ENV === "production") cookieOptions = true;
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
 
@@ -76,6 +76,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {
@@ -104,6 +106,32 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   req.user = freshUser;
 
+  next();
+});
+
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+
+    // decode token in order to check payload -> id
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+    const freshUser = await User.findById(decoded.id);
+
+    // check user exist
+    if (!freshUser) {
+      return next();
+    }
+
+    // check password changed
+    if (freshUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+
+    res.locals.user = freshUser;
+
+    return next();
+  }
   next();
 });
 
