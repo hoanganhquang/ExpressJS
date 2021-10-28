@@ -1,22 +1,23 @@
-const express = require("express");
-const path = require("path");
-const morgan = require("morgan");
-const helmet = require("helmet");
-const mongoSanitize = require("express-mongo-sanitize");
-const xss = require("xss-clean");
-const hpp = require("hpp");
-const rateLimit = require("express-rate-limit");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
+import express from "express";
+import path from "path";
+import morgan from "morgan";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
+import xss from "xss-clean";
+import hpp from "hpp";
+import rateLimit from "express-rate-limit";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
-const tourRoutes = require("./routes/tourRoutes");
-const userRoutes = require("./routes/userRoutes");
-const reviewRoutes = require("./routes/reviewRoutes");
-const viewRouters = require("./routes/viewRouters");
-const AppError = require("./utils/appError");
-const globalErrorHandler = require("./controllers/errController");
+import tourRoutes from "./routes/tourRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import viewRouters from "./routes/viewRouters.js";
+import AppError from "./utils/appError.js";
+import globalErrorHandler from "./controllers/errController.js";
 
 const app = express();
+const __dirname = path.resolve();
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -105,4 +106,4 @@ app.all("*", (req, res, next) => {
 
 app.use(globalErrorHandler);
 
-module.exports = app;
+export default app;

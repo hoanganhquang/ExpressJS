@@ -1,35 +1,52 @@
-const userRoutes = require("express").Router();
-const userController = require("../controllers/userController");
-const authController = require("../controllers/authController");
+import express from "express";
+const userRoutes = express.Router();
+import {
+  getMe,
+  getUser,
+  deleteMe,
+  updateMe,
+  deleteUser,
+  updateUser,
+  getAllUsers,
+} from "../controllers/userController.js";
+import {
+  signup,
+  login,
+  forgotPassword,
+  resetPassword,
+  protect,
+  updatePassword,
+  restrictTo,
+} from "../controllers/authController.js";
 
-userRoutes.post("/signup", authController.signup);
+userRoutes.post("/signup", signup);
 
-userRoutes.post("/login", authController.login);
+userRoutes.post("/login", login);
 
-userRoutes.post("/forgotPassword", authController.forgotPassword);
+userRoutes.post("/forgotPassword", forgotPassword);
 
-userRoutes.patch("/resetPassword/:token", authController.resetPassword);
+userRoutes.patch("/resetPassword/:token", resetPassword);
 
 // authentication
-userRoutes.use(authController.protect);
+userRoutes.use(protect);
 
-userRoutes.patch("/updatePassword", authController.updatePassword);
+userRoutes.patch("/updatePassword", updatePassword);
 
-userRoutes.get("/me", userController.getMe, userController.getUser);
+userRoutes.get("/me", getMe, getUser);
 
-userRoutes.delete("/deleteMe", userController.deleteMe);
+userRoutes.delete("/deleteMe", deleteMe);
 
-userRoutes.post("/updateMe", userController.updateMe);
+userRoutes.post("/updateMe", updateMe);
 
 // authorization
-userRoutes.use(authController.restrictTo("admin"));
+userRoutes.use(restrictTo("admin"));
 
-userRoutes.delete("/:id", userController.deleteUser);
+userRoutes.delete("/:id", deleteUser);
 
-userRoutes.patch("/:id", userController.updateUser);
+userRoutes.patch("/:id", updateUser);
 
-userRoutes.get("/:id", userController.getUser);
+userRoutes.get("/:id", getUser);
 
-userRoutes.route("/").get(userController.getAllUsers);
+userRoutes.route("/").get(getAllUsers);
 
-module.exports = userRoutes;
+export default userRoutes;

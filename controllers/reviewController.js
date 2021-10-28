@@ -1,19 +1,25 @@
-const Review = require("../models/reviewModel");
-const factory = require("./handlerFactory");
+import Review from "../models/reviewModel.js";
+import {
+  getAll,
+  getOne,
+  createOne,
+  deleteOne,
+  updateOne,
+} from "./handlerFactory.js";
 
-exports.getAllReviews = factory.getAll(Review);
+export const getAllReviews = getAll(Review);
 
-exports.setTourUserId = (req, res, next) => {
+export function setTourUserId(req, res, next) {
   if (!req.body.tour) req.body.tour = req.params.tourId;
   if (!req.body.user) req.body.user = req.user;
 
   next();
-};
+}
 
-exports.getReview = factory.getOne(Review);
+export const getReview = getOne(Review);
 
-exports.newReview = factory.createOne(Review);
+export const newReview = createOne(Review);
 
-exports.deleteReview = factory.deleteOne(Review);
+export const deleteReview = deleteOne(Review);
 
-exports.updateReview = factory.updateOne(Review);
+export const updateReview = updateOne(Review);

@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const validator = require("validator/validator");
-const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+import mongoose from "mongoose";
+// import validator from "validator/validator.js";
+import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 const userSchema = mongoose.Schema({
   name: {
@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema({
     required: [true, "Need an email"],
     trim: true,
     unique: true,
-    validate: [validator.isEmail, "Provide a valid email"],
+    // validate: [validator.isEmail, "Provide a valid email"],
   },
   photo: {
     type: String,
@@ -90,4 +90,4 @@ userSchema.methods.createPasswordResetToken = function () {
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User;

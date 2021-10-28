@@ -1,6 +1,6 @@
-const catchAsync = require("../utils/catchAsync");
-const User = require("../models/userModel");
-const factory = require("./handlerFactory");
+import catchAsync from "../utils/catchAsync.js";
+import User from "../models/userModel.js";
+import * as factory from "./handlerFactory.js";
 
 const filterObj = (obj, ...rest) => {
   const newOjb = {};
@@ -13,7 +13,7 @@ const filterObj = (obj, ...rest) => {
   return newOjb;
 };
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
+export const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
 
   res.status(200).json({
@@ -22,12 +22,12 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getMe = (req, res, next) => {
+export function getMe(req, res, next) {
   req.params.id = req.user.id;
   next();
-};
+}
 
-exports.updateMe = catchAsync(async (req, res, next) => {
+export const updateMe = catchAsync(async (req, res, next) => {
   const filter = filterObj(req.body, "name", "email");
   const user = await User.findByIdAndUpdate(req.user.id, filter, {
     new: true,
@@ -40,7 +40,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteMe = catchAsync(async (req, res, next) => {
+export const deleteMe = catchAsync(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.user.id, { active: false });
 
   res.status(200).json({
@@ -48,8 +48,8 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUser = factory.getOne(User);
+export const getUser = factory.getOne(User);
 
-exports.deleteUser = factory.deleteOne(User);
+export const deleteUser = factory.deleteOne(User);
 
-exports.updateUser = factory.updateOne(User);
+export const updateUser = factory.updateOne(User);

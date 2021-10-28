@@ -1,5 +1,6 @@
-const tourRoutes = require("express").Router();
-const {
+import express from "express";
+const tourRoutes = express.Router();
+import {
   getAllTours,
   getTour,
   createTour,
@@ -8,12 +9,12 @@ const {
   aliasTopTour,
   getTourStats,
   getMonthlyPlan,
-  getToursWithin,
-} = require("../controllers/tourController");
+  // getToursWithin,
+} from "../controllers/tourController.js";
 
-const authController = require("../controllers/authController");
-const reviewRouter = require("./reviewRoutes");
-const router = require("./reviewRoutes");
+import { protect, restrictTo } from "../controllers/authController.js";
+import reviewRouter from "./reviewRoutes.js";
+// import router from "./reviewRoutes";
 
 tourRoutes.use("/:tourId/reviews", reviewRouter);
 
@@ -21,35 +22,18 @@ tourRoutes.route("/tour-stats").get(getTourStats);
 
 tourRoutes
   .route("/monthly-plan/:year")
-  .get(
-    authController.protect,
-    authController.restrictTo("admin"),
-    getMonthlyPlan
-  );
+  .get(protect, restrictTo("admin"), getMonthlyPlan);
 
 tourRoutes.route("/top-5-cheap").get(aliasTopTour, getAllTours);
 
 tourRoutes
   .route("/:id")
   .get(getTour)
-  .patch(
-    authController.protect,
-    authController.restrictTo("admin", "lead-guide"),
-    updateTour
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo("admin", "lead-guide"),
-    deleteTour
-  );
+  .patch(protect, restrictTo("admin", "lead-guide"), updateTour)
+  .delete(protect, restrictTo("admin", "lead-guide"), deleteTour);
 
-tourRoutes.post(
-  "/new-tour",
-  authController.protect,
-  authController.restrictTo("admin"),
-  createTour
-);
+tourRoutes.post("/new-tour", protect, restrictTo("admin"), createTour);
 
 tourRoutes.route("/").get(getAllTours);
 
-module.exports = tourRoutes;
+export default tourRoutes;

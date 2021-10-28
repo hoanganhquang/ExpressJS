@@ -1,26 +1,32 @@
-const catchAsync = require("../utils/catchAsync");
-const Tour = require("../models/tourModel");
-const factory = require("./handlerFactory");
-const AppError = require("../utils/appError");
+import catchAsync from "../utils/catchAsync.js";
+import Tour from "../models/tourModel.js";
+import {
+  createOne,
+  deleteOne,
+  getAll,
+  updateOne,
+  getOne,
+} from "./handlerFactory.js";
+// import AppError from "../utils/appError.js";
 
-exports.aliasTopTour = (req, res, next) => {
+export function aliasTopTour(req, res, next) {
   req.query.limit = "1";
   req.query.sort = "-ratingsAverage,price";
   req.query.fields = "name,price,ratingsAvarage,summary,difficulty";
   next();
-};
+}
 
-exports.getAllTours = factory.getAll(Tour);
+export const getAllTours = getAll(Tour);
 
-exports.getTour = factory.getOne(Tour, "reviews");
+export const getTour = getOne(Tour, "reviews");
 
-exports.createTour = factory.createOne(Tour);
+export const createTour = createOne(Tour);
 
-exports.updateTour = factory.updateOne(Tour);
+export const updateTour = updateOne(Tour);
 
-exports.deleteTour = factory.deleteOne(Tour);
+export const deleteTour = deleteOne(Tour);
 
-exports.getTourStats = catchAsync(async (req, res) => {
+export const getTourStats = catchAsync(async (req, res) => {
   const stats = await Tour.aggregate([
     {
       $match: { ratingsAverage: { $gte: 4.5 } },
@@ -46,7 +52,7 @@ exports.getTourStats = catchAsync(async (req, res) => {
   });
 });
 
-exports.getMonthlyPlan = catchAsync(async (req, res) => {
+export const getMonthlyPlan = catchAsync(async (req, res) => {
   const year = req.params.year * 1;
 
   const plan = await Tour.aggregate([

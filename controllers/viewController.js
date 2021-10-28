@@ -1,9 +1,9 @@
-const catchAsync = require("../utils/catchAsync");
-const AppError = require("../utils/appError");
-const Tour = require("../models/tourModel");
-const User = require("../models/userModel");
+import catchAsync from "../utils/catchAsync.js";
+import AppError from "../utils/appError.js";
+import Tour from "../models/tourModel.js";
+import User from "../models/userModel.js";
 
-exports.getOverview = catchAsync(async (req, res) => {
+export const getOverview = catchAsync(async (req, res) => {
   const tours = await Tour.find();
 
   res.status(200).render("overview", {
@@ -12,7 +12,7 @@ exports.getOverview = catchAsync(async (req, res) => {
   });
 });
 
-exports.getTour = catchAsync(async (req, res, next) => {
+export const getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
     path: "reviews",
     fields: "review rating user",
@@ -23,6 +23,6 @@ exports.getTour = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.login = catchAsync(async (req, res, next) => {
+export const login = catchAsync(async (req, res, next) => {
   res.status(200).render("login");
 });

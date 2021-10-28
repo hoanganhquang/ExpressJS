@@ -10,6 +10,7 @@ html
       title Natours | #{title}
 
   body(data-alert=`${alert ? alert : ''}`)
+    script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js") 
     // HEADER
     include _header
 
@@ -20,7 +21,7 @@ html
     include _footer
 
     //- //- script(src='/js/mapbox.js')
-    //- script(src='/js/index.js')
+    script(type="module" src='/js/index.js')
     //- script(src='/js/bundle.js')
     //- script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
     //- //- script(src='https://js.stripe.com/v3/')

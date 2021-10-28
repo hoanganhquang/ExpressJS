@@ -1,15 +1,15 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
-const viewController = require("../controllers/viewController");
-const authController = require("../controllers/authController");
+import { login, getTour, getOverview } from "../controllers/viewController.js";
+import { isLoggedIn, protect } from "../controllers/authController.js";
 
-router.use(authController.isLoggedIn);
+router.use(isLoggedIn);
 
-router.get("/login", viewController.login);
+router.get("/login", login);
 
-router.get("/tour/:slug", authController.protect, viewController.getTour);
+router.get("/tour/:slug", protect, getTour);
 
-router.get("/", viewController.getOverview);
+router.get("/", getOverview);
 
-module.exports = router;
+export default router;
