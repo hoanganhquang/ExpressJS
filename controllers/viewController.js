@@ -36,3 +36,22 @@ export const getAccount = (req, res) => {
     title: "Account",
   });
 };
+
+export const updateUserDate = catchAsync(async (req, res) => {
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    {
+      name: req.body.name,
+      email: req.body.email,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).render("account", {
+    title: "Your account",
+    user,
+  });
+});

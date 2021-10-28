@@ -33,7 +33,7 @@ userRoutes.patch("/resetPassword/:token", resetPassword);
 // authentication
 userRoutes.use(protect);
 
-userRoutes.patch("/updatePassword", updatePassword);
+userRoutes.post("/updatePassword", updatePassword);
 
 userRoutes.get("/me", getMe, getUser);
 
