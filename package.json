@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/hoanganhquang/ExpressJS#readme",
   "dependencies": {
-    "axios": "^0.23.0",
+    "@babel/polyfill": "^7.12.1",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",

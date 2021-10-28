@@ -1,15 +1,20 @@
 import { Router } from "express";
 const router = Router();
 
-import { login, getTour, getOverview } from "../controllers/viewController.js";
+import {
+  login,
+  getTour,
+  getOverview,
+  getAccount,
+} from "../controllers/viewController.js";
 import { isLoggedIn, protect } from "../controllers/authController.js";
 
-router.use(isLoggedIn);
+router.get("/login", isLoggedIn, login);
 
-router.get("/login", login);
+router.get("/tour/:slug", isLoggedIn, getTour);
 
-router.get("/tour/:slug", protect, getTour);
+router.get("/me", protect, getAccount);
 
-router.get("/", getOverview);
+router.get("/", isLoggedIn, getOverview);
 
 export default router;

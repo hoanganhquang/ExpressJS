@@ -17,11 +17,14 @@ import {
   protect,
   updatePassword,
   restrictTo,
+  logout,
 } from "../controllers/authController.js";
 
 userRoutes.post("/signup", signup);
 
 userRoutes.post("/login", login);
+
+userRoutes.get("/logout", logout);
 
 userRoutes.post("/forgotPassword", forgotPassword);
 

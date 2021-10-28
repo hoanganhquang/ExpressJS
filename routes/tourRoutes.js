@@ -14,7 +14,6 @@ import {
 
 import { protect, restrictTo } from "../controllers/authController.js";
 import reviewRouter from "./reviewRoutes.js";
-// import router from "./reviewRoutes";
 
 tourRoutes.use("/:tourId/reviews", reviewRouter);
 

@@ -4,9 +4,9 @@ html
     block head
       meta(charset='UTF-8')
       meta(name='viewport' content='width=device-width, initial-scale=1.0')
-      link(rel='stylesheet' href='/css/style.css')
       link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
       link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+      link(rel='stylesheet' href='/css/style.css')
       title Natours | #{title}
 
   body(data-alert=`${alert ? alert : ''}`)
@@ -20,9 +20,5 @@ html
     // FOOTER
     include _footer
 
-    //- //- script(src='/js/mapbox.js')
-    script(type="module" src='/js/index.js')
-    //- script(src='/js/bundle.js')
-    //- script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
-    //- //- script(src='https://js.stripe.com/v3/')
-    //- //- script(src='../public/js/bundle.js')
+    script(type="module" src='/js/bundle.js')
+    //- script(src='https://js.stripe.com/v3/')

@@ -18,6 +18,10 @@ export const getTour = catchAsync(async (req, res, next) => {
     fields: "review rating user",
   });
 
+  if (!tour) {
+    return next(new AppError("Tour valid", 404));
+  }
+
   res.status(200).render("tour", {
     tour,
   });
@@ -26,3 +30,9 @@ export const getTour = catchAsync(async (req, res, next) => {
 export const login = catchAsync(async (req, res, next) => {
   res.status(200).render("login");
 });
+
+export const getAccount = (req, res) => {
+  res.status(200).render("account", {
+    title: "Account",
+  });
+};
