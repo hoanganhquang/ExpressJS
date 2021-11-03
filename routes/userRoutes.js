@@ -1,4 +1,5 @@
 import express from "express";
+
 const userRoutes = express.Router();
 import {
   getMe,
@@ -8,6 +9,8 @@ import {
   deleteUser,
   updateUser,
   getAllUsers,
+  uploadUserPhoto,
+  resizeUserPhoto,
 } from "../controllers/userController.js";
 import {
   signup,
@@ -39,7 +42,7 @@ userRoutes.get("/me", getMe, getUser);
 
 userRoutes.delete("/deleteMe", deleteMe);
 
-userRoutes.post("/updateMe", updateMe);
+userRoutes.post("/updateMe", uploadUserPhoto, resizeUserPhoto, updateMe);
 
 // authorization
 userRoutes.use(restrictTo("admin"));
