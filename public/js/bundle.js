@@ -78,12 +78,12 @@ if ($25f54650620fced4$var$loginForm) $25f54650620fced4$var$loginForm.addEventLis
 if ($25f54650620fced4$var$logoutBtn) $25f54650620fced4$var$logoutBtn.addEventListener("click", $c29fe3e4627a4397$export$a0973bcfe11b05c9);
 if ($25f54650620fced4$var$formDataUpdate) $25f54650620fced4$var$formDataUpdate.addEventListener("submit", (e)=>{
     e.preventDefault();
-    const email = document.getElementById("email").value;
-    const name = document.getElementById("name").value;
-    $ad489fe6a55bf4b2$export$8ddaddf355aae59c({
-        name: name,
-        email: email
-    }, "data");
+    const form = new FormData();
+    form.append("name", document.getElementById("name").value);
+    form.append("email", document.getElementById("email").value);
+    form.append("photo", document.getElementById("photo").files[0]);
+    console.log(form);
+    $ad489fe6a55bf4b2$export$8ddaddf355aae59c(form, "data");
 });
 if ($25f54650620fced4$var$formPasswordUpdate) $25f54650620fced4$var$formPasswordUpdate.addEventListener("submit", async (e)=>{
     e.preventDefault();
