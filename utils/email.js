@@ -1,4 +1,4 @@
-import { createTransport } from "nodemailer";
+import nodemailer from "nodemailer";
 import pug from "pug";
 import { htmlToText } from "html-to-text";
 import path from "path";
@@ -12,10 +12,17 @@ export default class Email {
 
   newTransport() {
     if (process.env.NODE_ENV === "production") {
-      return 1;
+      console.log("production");
+      return nodemailer.createTransport({
+        service: "SendGrid",
+        auth: {
+          user: process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD,
+        },
+      });
     }
 
-    return createTransport({
+    return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
       auth: {
@@ -27,7 +34,7 @@ export default class Email {
 
   async send(template, subject) {
     const __dirname = path.resolve();
-    console.log(__dirname);
+
     const html = pug.renderFile(`${__dirname}/views/email/${template}.pug`, {
       filename: this.firstName,
       url: this.url,
@@ -46,6 +53,10 @@ export default class Email {
   }
 
   async sendWelcome() {
-    await this.send("welcome", "To the page");
+    await this.send("welcome", "Welcome to the page");
+  }
+
+  async sendPasswordReset() {
+    await this.send("passwordReset", "Your password reset token");
   }
 }

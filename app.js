@@ -5,7 +5,7 @@ import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import xss from "xss-clean";
 import hpp from "hpp";
-import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -13,6 +13,7 @@ import tourRoutes from "./routes/tourRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import viewRouters from "./routes/viewRouters.js";
+import bookingRouters from "./routes/bookingRoutes.js";
 import AppError from "./utils/appError.js";
 import globalErrorHandler from "./controllers/errController.js";
 
@@ -99,6 +100,7 @@ app.use("/", viewRouters);
 app.use("/api/v1/tours", tourRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/reviews", reviewRoutes);
+app.use("/api/v1/bookings", bookingRouters);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));

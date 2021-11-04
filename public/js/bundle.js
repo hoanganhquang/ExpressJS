@@ -65,10 +65,25 @@ const $ad489fe6a55bf4b2$export$8ddaddf355aae59c = async (data, type)=>{
 };
 
 
+
+const $790dcc399d6349e0$var$stripe = Stripe("pk_test_51Js1lgASo0bi48TADOMmUH6FkNLRvnBnMrzRSSEqCZSOeNsbwrJ9Hka8ORb0KTxHKNHFslDol3SJcrzHG9vdBdeq00LfjQ43C5");
+const $790dcc399d6349e0$export$8d5bdbf26681c0c2 = async (tourId)=>{
+    try {
+        const session = await axios(`http://localhost:3000/api/v1/bookings/checkout-session/${tourId}`);
+        await $790dcc399d6349e0$var$stripe.redirectToCheckout({
+            sessionId: session.data.session.id
+        });
+    } catch (error) {
+        $eaa6913386173b1b$export$de026b00723010c1("error", error);
+    }
+};
+
+
 const $25f54650620fced4$var$loginForm = document.querySelector(".form--login");
 const $25f54650620fced4$var$formDataUpdate = document.querySelector(".form-user-data");
 const $25f54650620fced4$var$formPasswordUpdate = document.querySelector(".form-user-password");
 const $25f54650620fced4$var$logoutBtn = document.querySelector(".nav__el--logout");
+const $25f54650620fced4$var$bookBtn = document.getElementById("book-tour");
 if ($25f54650620fced4$var$loginForm) $25f54650620fced4$var$loginForm.addEventListener("submit", (e)=>{
     e.preventDefault();
     const email = document.getElementById("email").value;
@@ -82,7 +97,6 @@ if ($25f54650620fced4$var$formDataUpdate) $25f54650620fced4$var$formDataUpdate.a
     form.append("name", document.getElementById("name").value);
     form.append("email", document.getElementById("email").value);
     form.append("photo", document.getElementById("photo").files[0]);
-    console.log(form);
     $ad489fe6a55bf4b2$export$8ddaddf355aae59c(form, "data");
 });
 if ($25f54650620fced4$var$formPasswordUpdate) $25f54650620fced4$var$formPasswordUpdate.addEventListener("submit", async (e)=>{
@@ -95,6 +109,11 @@ if ($25f54650620fced4$var$formPasswordUpdate) $25f54650620fced4$var$formPassword
         newPassword: newPassword
     }, "password");
     document.querySelector(".btn--save-password").textContent = "Save password";
+});
+if ($25f54650620fced4$var$bookBtn) $25f54650620fced4$var$bookBtn.addEventListener("click", (e)=>{
+    e.target.textContent = "Processing...";
+    const { tourId: tourId  } = e.target.dataset;
+    $790dcc399d6349e0$export$8d5bdbf26681c0c2(tourId);
 });
 
 
