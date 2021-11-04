@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import sendEmail from "../utils/email.js";
 import crypto from "crypto";
 import User from "../models/userModel.js";
+import Email from "../utils/email.js";
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -48,13 +49,10 @@ export const logout = (req, res) => {
 };
 
 export const signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
-    role: req.body.role,
-  });
+  const newUser = await User.create(req.body);
+  const url = `${req.protocal}://${req.get("host")}/me`;
+
+  await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 200, res);
 });
@@ -180,11 +178,11 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   const message = `Forgot pass, submit a PATCH: ${resetURL}`;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: "Your password reset token (10 mins)",
-      message,
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: "Your password reset token (10 mins)",
+    //   message,
+    // });
 
     res.status(200).json({
       status: "success",

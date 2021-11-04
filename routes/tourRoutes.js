@@ -9,6 +9,8 @@ import {
   aliasTopTour,
   getTourStats,
   getMonthlyPlan,
+  uploadTourPhotos,
+  resizeTourImages,
   // getToursWithin,
 } from "../controllers/tourController.js";
 
@@ -28,7 +30,13 @@ tourRoutes.route("/top-5-cheap").get(aliasTopTour, getAllTours);
 tourRoutes
   .route("/:id")
   .get(getTour)
-  .patch(protect, restrictTo("admin", "lead-guide"), updateTour)
+  .patch(
+    protect,
+    restrictTo("admin", "lead-guide"),
+    uploadTourPhotos,
+    resizeTourImages,
+    updateTour
+  )
   .delete(protect, restrictTo("admin", "lead-guide"), deleteTour);
 
 tourRoutes.post("/new-tour", protect, restrictTo("admin"), createTour);
