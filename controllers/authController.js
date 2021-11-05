@@ -12,7 +12,7 @@ const signToken = (id) => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   const cookieOptions = {
@@ -20,10 +20,8 @@ const createSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: false,
+    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   };
-
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
 
@@ -53,7 +51,7 @@ export const signup = catchAsync(async (req, res, next) => {
 
   await new Email(newUser, url).sendWelcome();
 
-  createSendToken(newUser, 200, res);
+  createSendToken(newUser, 200, req, res);
 });
 
 export const login = catchAsync(async (req, res, next) => {
@@ -71,7 +69,7 @@ export const login = catchAsync(async (req, res, next) => {
     return next(new AppError("Invalid information", 401));
   }
 
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 export const protect = catchAsync(async (req, res, next) => {
@@ -235,5 +233,5 @@ export const updatePassword = catchAsync(async (req, res, next) => {
   user.password = req.body.newPassword;
   await user.save({ validateBeforeSave: false });
 
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });

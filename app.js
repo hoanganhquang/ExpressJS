@@ -20,6 +20,8 @@ import globalErrorHandler from "./controllers/errController.js";
 const app = express();
 const __dirname = path.resolve();
 
+app.enable("trust proxy");
+
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
