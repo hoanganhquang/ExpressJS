@@ -8,7 +8,7 @@ import hpp from "hpp";
 // import rateLimit from "express-rate-limit";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import compression from "compression";
 import tourRoutes from "./routes/tourRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
@@ -88,6 +88,8 @@ app.use(
     ],
   })
 );
+
+app.use(compression());
 
 // Test middleware
 // app.use((req, res, next) => {
