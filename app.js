@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import morgan from "morgan";
+// import morgan from "morgan";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import xss from "xss-clean";
@@ -52,9 +52,9 @@ app.use(
 );
 
 // Development logging
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
+// if (process.env.NODE_ENV === "development") {
+//   app.use(morgan("dev"));
+// }
 
 // Limit requests from same API
 // const limiter = rateLimit({
