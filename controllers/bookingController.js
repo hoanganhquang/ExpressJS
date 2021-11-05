@@ -11,6 +11,16 @@ import {
 } from "./handlerFactory.js";
 import Stripe from "stripe";
 
+export const getAllBookings = getAll(Booking);
+
+export const deleleBooking = deleteOne(Booking);
+
+export const updateBooking = updateOne(Booking);
+
+export const createBooking = createOne(Booking);
+
+export const getBooking = getOne(Booking);
+
 export const getCheckoutSession = catchAsync(async (req, res, next) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const tour = await Tour.findById(req.params.tourID);
