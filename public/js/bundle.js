@@ -14,7 +14,7 @@ const $c29fe3e4627a4397$export$596d806903d1f59e = async (email, password)=>{
     try {
         const res = await axios({
             method: "POST",
-            url: "http://localhost:3000/api/v1/users/login",
+            url: "/api/v1/users/login",
             data: {
                 email: email,
                 password: password
@@ -34,7 +34,7 @@ const $c29fe3e4627a4397$export$a0973bcfe11b05c9 = async ()=>{
     try {
         const res = await axios({
             method: "GET",
-            url: "http://localhost:3000/api/v1/users/logout"
+            url: "/api/v1/users/logout"
         });
         if (res.data.status === "success") location.reload(true);
     } catch (error) {
@@ -46,7 +46,7 @@ const $c29fe3e4627a4397$export$a0973bcfe11b05c9 = async ()=>{
 
 const $ad489fe6a55bf4b2$export$8ddaddf355aae59c = async (data, type)=>{
     try {
-        const url = type === "password" ? "http://localhost:3000/api/v1/users/updatePassword" : "http://localhost:3000/api/v1/users/updateMe";
+        const url = type === "password" ? "/api/v1/users/updatePassword" : "/api/v1/users/updateMe";
         const res = await axios({
             method: "POST",
             url: url,
@@ -69,7 +69,7 @@ const $ad489fe6a55bf4b2$export$8ddaddf355aae59c = async (data, type)=>{
 const $790dcc399d6349e0$var$stripe = Stripe("pk_test_51Js1lgASo0bi48TADOMmUH6FkNLRvnBnMrzRSSEqCZSOeNsbwrJ9Hka8ORb0KTxHKNHFslDol3SJcrzHG9vdBdeq00LfjQ43C5");
 const $790dcc399d6349e0$export$8d5bdbf26681c0c2 = async (tourId)=>{
     try {
-        const session = await axios(`http://localhost:3000/api/v1/bookings/checkout-session/${tourId}`);
+        const session = await axios(`/api/v1/bookings/checkout-session/${tourId}`);
         await $790dcc399d6349e0$var$stripe.redirectToCheckout({
             sessionId: session.data.session.id
         });
